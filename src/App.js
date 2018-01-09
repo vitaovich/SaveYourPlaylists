@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import GoogleSignIn from './GoogleSignIn';
 import SearchBar from './SearchBar';
-import SearchResults from './SearchResults';
+import SearchResultTable from './SearchResultTable';
 
 class App extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class App extends Component {
         <SearchBar
           onHandleSubmit={this.handleOnSubmit}
         />
-        <SearchResults url={url}/>
+        <SearchResultTable url={url}/>
       </div>
     );
   }
