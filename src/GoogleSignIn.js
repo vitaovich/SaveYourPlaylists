@@ -1,69 +1,65 @@
 import React, { Component } from 'react';
 
-/* global gapi */
-
-const API_KEY = 'AIzaSyADQZkj1blmWY2cTdbG2O4CR4zDfkch4K4';
+const CLIENT_ID = '379911385768-enee68tbs2v1fg4l2g7rr9hdh03shfc1.apps.googleusercontent.com'
 const DISCOVERY_DOCS =  ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"];
 const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
 
-class GoogleSignIn extends Component {
+/* global gapi */
 
+class GoogleSignIn extends Component {
   constructor(props) {
     super(props);
-    this.state = {gapiReady: false};
 
-    this.onSignIn = this.onSignIn.bind(this);
-    this.signOut = this.signOut.bind(this);
+    this.loadGapi = this.loadGapi.bind(this);
+    this.initClient = this.initClient.bind(this);
+    this.updateSignInStatus = this.updateSignInStatus.bind(this);
+    this.handleAuthClick = this.handleAuthClick.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
+    this.handleInit = this.handleInit.bind(this);
   }
 
-  loadYoutubeApi() {
+  loadGapi() {
     const script = document.createElement("script");
-    script.src = "https://apis.google.com/js/client.js";
+    script.src = "https://apis.google.com/js/api.js";
 
     script.onload = () => {
-      gapi.signin2.render('g-signin2', {
-        scope: SCOPES,
-        discoveryDocs : DISCOVERY_DOCS,
-        onsuccess: this.onSignIn
-      });
-
-      gapi.load('client', () => {
-        gapi.client.setApiKey(API_KEY);
-        gapi.client.load('youtube', 'v3', () => {
-          this.setState({ gapiReady: true });
-        });
-      });
+      gapi.load('client:auth2', this.initClient);
     };
     document.body.appendChild(script);
   }
 
+  initClient() {
+    gapi.client.init({
+      discoveryDocs: DISCOVERY_DOCS,
+      clientId: CLIENT_ID,
+      scope: SCOPES
+    }).then(this.handleInit);
+  }
+
+  handleInit() {
+    gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSignInStatus);
+    this.updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+  }
+
+  updateSignInStatus(isSignedIn) {
+    const signInStatus = {isSignedIn: isSignedIn, handleSignOut: this.handleSignOut}
+    this.props.onHandleSignIn(signInStatus);
+  }
+
+  handleAuthClick() {
+    gapi.auth2.getAuthInstance().signIn();
+  }
+
+  handleSignOut() {
+    gapi.auth2.getAuthInstance().signOut();
+  }
+
   componentDidMount() {
-    this.loadYoutubeApi();
+    this.loadGapi();
   }
-
-  onSignIn(googleUser) {
-    let profile = googleUser.getBasicProfile();
-    console.log('token');
-    console.log(googleUser.getAuthResponse().id_token);
-    this.props.onHandleSignIn(profile);
-  }
-
-  signOut() {
-    console.log('trying to sign out');
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-
 
   render() {
-      return (
-        <div>
-          <div id="g-signin2"></div>
-          <a href="" onClick={this.signOut}>Sign out</a>
-        </div>
-      );
+    return <button id="authorize-button" onClick={this.handleAuthClick}>Authorize</button>
   }
 }
 
