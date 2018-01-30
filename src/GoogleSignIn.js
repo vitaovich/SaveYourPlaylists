@@ -19,13 +19,7 @@ class GoogleSignIn extends Component {
   }
 
   loadGapi() {
-    const script = document.createElement("script");
-    script.src = "https://apis.google.com/js/api.js";
-
-    script.onload = () => {
-      gapi.load('client:auth2', this.initClient);
-    };
-    document.body.appendChild(script);
+    gapi.load('client:auth2', this.initClient);
   }
 
   initClient() {
@@ -55,8 +49,9 @@ class GoogleSignIn extends Component {
   }
 
   componentDidMount() {
-    this.loadGapi();
+    window.addEventListener('google-loaded', this.loadGapi);
   }
+
 
   render() {
     return <button id="authorize-button" onClick={this.handleAuthClick}>Authorize</button>

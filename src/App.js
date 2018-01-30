@@ -18,7 +18,6 @@ class App extends Component {
 
   render() {
     const url = this.state.url;
-    const user = this.state.user;
     const isSignedIn = this.state.signInStatus.isSignedIn;
     const handleSignOut = this.state.signInStatus.handleSignOut;
     let login = null;
