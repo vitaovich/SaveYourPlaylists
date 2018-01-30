@@ -6,6 +6,7 @@ import SearchBar from './SearchBar';
 import SearchResultTable from './SearchResultTable';
 import Profile from './Profile';
 import SignOut from './SignOut';
+import YoutubePlaylists from './YoutubePlaylists';
 
 class App extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class App extends Component {
           <h1 className="App-title">Breanna is super cute</h1>
         </header>
         {login}
+        {isSignedIn && <YoutubePlaylists />}
         <SearchBar
           onHandleSubmit={this.handleOnSubmit}
         />
