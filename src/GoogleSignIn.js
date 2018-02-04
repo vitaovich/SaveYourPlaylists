@@ -37,6 +37,16 @@ class GoogleSignIn extends Component {
   }
 
   updateSignInStatus(isSignedIn) {
+    if(isSignedIn) {
+      const user = gapi.auth2.getAuthInstance().currentUser.get();
+      const id_token = user.getAuthResponse().id_token
+      fetch('http://localhost:4568/api/users',
+      {
+        method: 'post',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'idtoken=' + id_token,
+      })
+    }
     const signInStatus = {isSignedIn: isSignedIn, handleSignOut: this.handleSignOut}
     this.props.onHandleSignIn(signInStatus);
   }

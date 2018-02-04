@@ -23,11 +23,11 @@ this.getAll = function (req, res) {
 
 this.post = function (req, res) {
   console.log('Post a playlist.');
-  console.log(req.body);
+  // console.log(req.body);
   const playlists = req.body.map((playlist) => {
     let pl = new Playlist(playlist);
   });
-  Playlist.insertMany(playlists, (error, docs) => {console.log(error)});
+  // Playlist.insertMany(playlists, (error, docs) => {console.log(error)});
   res.send(playlists);
 };
 

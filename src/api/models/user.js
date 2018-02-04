@@ -3,10 +3,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-    etag: String,
-    youtubeId: {type: String, unique: true},
-    title: String,
-    description: String,
+    sub: {type: String, unique: true},
+    email: String,
+    name: String,
+    given_name: String,
+    picture: String,
   });
 
 //Export model
