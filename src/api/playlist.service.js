@@ -24,11 +24,11 @@ this.getAll = function (req, res) {
 this.post = function (req, res) {
   console.log('Post a playlist.');
   console.log(req.body);
-  var playlist = new Playlist(req.body);
-  playlist.save( err => {
-    if ( err ) return handleError( err, res );
+  const playlists = req.body.map((playlist) => {
+    let pl = new Playlist(playlist);
   });
-  res.send(playlist);
+  Playlist.insertMany(playlists, (error, docs) => {console.log(error)});
+  res.send(playlists);
 };
 
 this.put = function(req, res) {
@@ -49,7 +49,7 @@ this.delete = function(req, res) {
 };
 
 function handleError(err, res) {
-  res.send(404);
+  res.sendStatus(404);
   console.log('\n\nFound error\n\n');
   console.log(err);
 };

@@ -19,6 +19,7 @@ class GoogleSignIn extends Component {
   }
 
   loadGapi() {
+    console.log('load client auth2');
     gapi.load('client:auth2', this.initClient);
   }
 
@@ -49,7 +50,11 @@ class GoogleSignIn extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('google-loaded', this.loadGapi);
+    if(window.gapiready) {
+      this.loadGapi()
+    } else {
+      window.addEventListener('google-loaded', this.loadGapi);
+    }
   }
 
 

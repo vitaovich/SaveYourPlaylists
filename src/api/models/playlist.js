@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PlaylistSchema = new Schema({
-    youtubeId: String,
+    etag: String,
+    youtubeId: {type: String, unique: true},
     title: String,
     description: String,
   });

@@ -10,10 +10,14 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <script type="text/javascript">
-    function triggerGapiLoaded() {window.dispatchEvent(new Event('google-loaded'));}</script>
+
     <script async defer src="https://apis.google.com/js/api.js"
       onload="triggerGapiLoaded()">
+    </script>
+    <script type="text/javascript">
+    function triggerGapiLoaded() {
+      window.gapiready = true;
+      window.dispatchEvent(new Event('google-loaded'));}
     </script>
 
 

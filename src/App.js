@@ -15,6 +15,7 @@ class App extends Component {
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnSignIn = this.handleOnSignIn.bind(this);
+    this.handlePlaylistIdSubmit = this.handlePlaylistIdSubmit.bind(this);
   }
 
   render() {
@@ -39,7 +40,7 @@ class App extends Component {
           <h1 className="App-title">Breanna is super cute</h1>
         </header>
         {login}
-        {isSignedIn && <YoutubePlaylists />}
+        {isSignedIn && <YoutubePlaylists onHandlePlaylistSelect={this.handlePlaylistIdSubmit}/>}
         <SearchBar
           onHandleSubmit={this.handleOnSubmit}
         />
@@ -51,6 +52,10 @@ class App extends Component {
   handleOnSubmit(url) {
     this.setState({url: url});
   };
+
+  handlePlaylistIdSubmit(id) {
+    this.handleOnSubmit('list=' + id);
+  }
 
   handleOnSignIn(signInStatus) {
     this.setState({signInStatus: signInStatus});

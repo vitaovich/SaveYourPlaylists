@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PlaylistItem from './PlaylistItem';
 
 /* global gapi */
 
@@ -24,6 +25,19 @@ class YoutubePlaylists extends Component {
 
   handlePlaylistsList(response) {
     console.log(response.result);
+    const playlists = response.result.items.map((item) => {
+      return {etag: item.etag,
+              youtubeId: item.id,
+              title: item.snippet.localized.title,
+              description: item.snippet.localized.description}
+    });
+    console.log(playlists);
+    fetch('http://localhost:4568/api/playlists',
+    {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(playlists),
+    }).then((response) => {console.log(response);});
     this.setState({playlists: response.result.items})
   }
 
@@ -31,28 +45,18 @@ class YoutubePlaylists extends Component {
     gapi.client.load('youtube', 'v3', this.getYoutubePlaylists);
   }
 
-
-
   render() {
     const playlists = this.state.playlists;
     const list = playlists.map((playlist) =>
-      <Playlist key={playlist.id}
+      <PlaylistItem key={playlist.id}
                 id={playlist.id}
-                title={playlist.snippet.title}/>
+                title={playlist.snippet.title}
+                onHandlePlaylistSelect={this.props.onHandlePlaylistSelect}/>
     );
     return (
       <ul>{list}</ul>
     );
   }
-}
-
-function Playlist(props) {
-  const title = props.title;
-  return (
-    <li>
-      {title}
-    </li>
-  );
 }
 
 export default YoutubePlaylists;
