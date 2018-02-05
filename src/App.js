@@ -11,7 +11,7 @@ import YoutubePlaylists from './YoutubePlaylists';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {url: '', signInStatus: {isSignedIn: false}};
+    this.state = {url: '', signInStatus: {isSignedIn: false, user: {sub:'',email:'',name:'',given_name:'',picture:''}}};
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnSignIn = this.handleOnSignIn.bind(this);
@@ -21,12 +21,16 @@ class App extends Component {
   render() {
     const url = this.state.url;
     const isSignedIn = this.state.signInStatus.isSignedIn;
+    const user = this.state.signInStatus.user;
     const handleSignOut = this.state.signInStatus.handleSignOut;
     let login = null;
     if(isSignedIn) {
-      login = <SignOut
+      login = <div><SignOut
                   onSignOut={handleSignOut}
                 />
+              <Profile
+                user={user}
+              /></div>
     } else {
       login = <GoogleSignIn
                   onHandleSignIn={this.handleOnSignIn}

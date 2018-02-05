@@ -7,9 +7,10 @@ class Profile extends Component {
   }
 
   render() {
-    const imgUrl = this.props.user.imgUrl;
-    const name = this.props.user.name;
-    const email = this.props.user.email;
+    const user = this.props.user;
+    const imgUrl = user.picture;
+    const name = user.name;
+    const email = user.email;
       return (
         <div>
           <img src={imgUrl} alt="Profile Pic"/>
