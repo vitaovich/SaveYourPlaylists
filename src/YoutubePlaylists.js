@@ -25,20 +25,23 @@ class YoutubePlaylists extends Component {
 
   handlePlaylistsList(response) {
     console.log(response.result);
-    const playlists = response.result.items.map((item) => {
-      return {etag: item.etag,
-              youtubeId: item.id,
-              title: item.snippet.localized.title,
-              description: item.snippet.localized.description}
-    });
-    console.log(playlists);
-    fetch('http://localhost:4568/api/playlists',
-    {
-      method: 'post',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(playlists),
-    }).then((response) => {console.log(response);});
-    this.setState({playlists: response.result.items})
+    if(response.result) {
+      const playlists = response.result.items.map((item) => {
+        return {etag: item.etag,
+                youtubeId: item.id,
+                title: item.snippet.localized.title,
+                description: item.snippet.localized.description}
+      });
+      console.log(playlists);
+      fetch('http://localhost:4568/api/playlists',
+      {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(playlists),
+      }).then((response) => {console.log(response);});
+      this.setState({playlists: response.result.items})
+    }
+
   }
 
   componentDidMount() {

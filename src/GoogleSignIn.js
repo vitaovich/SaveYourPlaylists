@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './GoogleSignIn.css';
 
 const CLIENT_ID = '379911385768-enee68tbs2v1fg4l2g7rr9hdh03shfc1.apps.googleusercontent.com'
 const DISCOVERY_DOCS =  ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"];
@@ -85,7 +86,13 @@ class GoogleSignIn extends Component {
   }
 
   render() {
-    return <button id="authorize-button" onClick={this.handleAuthClick}>Authorize</button>
+    return (
+        <div id="gSignIn" className="customGPlusSignIn" onClick={this.handleAuthClick}>
+          <span className="icon"></span>
+          <span className="buttonText">Log in with Google</span>
+        </div>
+    );
+
   }
 }
 

@@ -11,13 +11,13 @@ class Profile extends Component {
     const imgUrl = user.picture;
     const name = user.name;
     const email = user.email;
-      return (
-        <div>
-          <img src={imgUrl} alt="Profile Pic"/>
-          <p>{name}</p>
-          <p>{email}</p>
-        </div>
-      );
+    return (
+      <div>
+        <img src={imgUrl} alt="Profile Pic"/>
+        <p>{name}</p>
+        <p>{email}</p>
+      </div>
+    );
   }
 }
 
