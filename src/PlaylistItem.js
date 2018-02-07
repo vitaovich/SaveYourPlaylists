@@ -15,9 +15,7 @@ class PlaylistItem extends Component {
     const title = this.props.title;
 
     return (
-      <li>
-        <div onClick={this.handlePlaylistClick}>{title}</div>
-      </li>
+      <div onClick={this.handlePlaylistClick}>{title}</div>
     );
   }
 }

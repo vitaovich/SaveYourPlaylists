@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Label } from 'semantic-ui-react'
 
 class Profile extends Component {
 
@@ -13,9 +14,10 @@ class Profile extends Component {
     const email = user.email;
     return (
       <div>
-        <img src={imgUrl} alt="Profile Pic"/>
-        <p>{name}</p>
-        <p>{email}</p>
+        <Label as='a' image size='massive' color='black'>
+          <img src={imgUrl} />
+          {name}
+        </Label>
       </div>
     );
   }

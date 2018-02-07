@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Menu } from 'semantic-ui-react'
 import PlaylistItem from './PlaylistItem';
 
 /* global gapi */
@@ -51,13 +52,17 @@ class YoutubePlaylists extends Component {
   render() {
     const playlists = this.state.playlists;
     const list = playlists.map((playlist) =>
-      <PlaylistItem key={playlist.id}
-                id={playlist.id}
-                title={playlist.snippet.title}
-                onHandlePlaylistSelect={this.props.onHandlePlaylistSelect}/>
+      <Menu.Item key={playlist.id}>
+        <PlaylistItem id={playlist.id}
+                  title={playlist.snippet.title}
+                  onHandlePlaylistSelect={this.props.onHandlePlaylistSelect}/>
+      </Menu.Item>
     );
     return (
-      <ul>{list}</ul>
+      <div>
+        {list}
+
+      </div>
     );
   }
 }

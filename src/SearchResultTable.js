@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import playlistSearch from './GoogleApiUtils';
 import querystring from 'querystring'
+import './SearchResultTable.css'
 
 const API_KEY = 'AIzaSyADQZkj1blmWY2cTdbG2O4CR4zDfkch4K4'
 
@@ -56,7 +57,7 @@ class SearchResultTable extends Component {
       videos = items.map(this.createVideo);
     }
     return(
-      <div>
+      <div className='minHeight'>
       <VideoList
         videos={videos}
       />
@@ -79,10 +80,11 @@ function VideoListItem(props) {
 
 function VideoList(props) {
   const videos = props.videos;
+  console.log(videos);
+
   if(!videos.length) {
     return null;
   }
-  console.log(videos);
   const videoListItems = videos.map((video) => {
     return (
       <VideoListItem
