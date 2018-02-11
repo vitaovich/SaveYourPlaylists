@@ -1,12 +1,8 @@
-import React, { Component } from 'react'
-import { List, Header, Icon, Image } from 'semantic-ui-react'
-import playlistIcon  from './assets/images/playlist_icon.png'
+import React, { Component } from 'react';
+import { List, Header, Image } from 'semantic-ui-react';
+import playlistIcon  from './assets/images/playlist_icon.png';
 
 class PlaylistContents extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const playlist = this.props.playlist || { playlistId: '', title: 'No Playlist Selected' }
     const contents = this.props.contents || [{ contentId: '', title: 'No content available', description: 'Nothing' }];

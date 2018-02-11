@@ -12,7 +12,7 @@
       cursor: pointer;
     }
     span.icon {
-      background: url('./btn_google_light_normal_ios.svg') transparent 5px 50% no-repeat;
+      background: url('./assets/images/btn_google_light_normal_ios.svg') transparent 5px 50% no-repeat;
       display: inline-block;
       vertical-align: middle;
       width: 42px;

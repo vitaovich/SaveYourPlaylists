@@ -7,7 +7,7 @@ var PlaylistSchema = new Schema({
     youtubeId: {type: String, unique: true},
     title: String,
     description: String,
-  });
+});
 
 //Export model
 module.exports = mongoose.model('Playlist', PlaylistSchema);

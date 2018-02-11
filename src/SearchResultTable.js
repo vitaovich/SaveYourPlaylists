@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import playlistSearch from './GoogleApiUtils';
+import { playlistSearch } from './GoogleApiUtils';
 import querystring from 'querystring'
 import './SearchResultTable.css'
 
@@ -72,7 +72,7 @@ function VideoListItem(props) {
   const thumbnailUrl = props.thumbnail ? props.thumbnail.url : '';
   return (
     <li>
-      <img src={thumbnailUrl} />
+      <img src={thumbnailUrl} alt='nothing found'/>
       <a href={youtubeURL}>{title}</a>
     </li>
   );

@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Item } from 'semantic-ui-react'
+import { Sidebar, Segment, Menu, Image, Header } from 'semantic-ui-react'
 import playlistIcon  from './assets/images/playlist_icon.png'
 
 class SidebarLeftUncover extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const visible = this.props.visible;
     const sidebarOptions = this.props.options || <Menu.Item>No Playlists Found</Menu.Item>;

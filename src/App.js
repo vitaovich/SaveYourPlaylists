@@ -1,32 +1,30 @@
 import React, { Component } from 'react';
 import GoogleSignIn from './GoogleSignIn';
-import SearchBar from './SearchBar';
-import SearchResultTable from './SearchResultTable';
 import Profile from './Profile';
-import SignOut from './SignOut';
 import YoutubePlaylists from './YoutubePlaylists';
 import SidebarLeftUncover from './SidebarLeftUncover';
-import {Button} from 'semantic-ui-react';
-import PlaylistContents from './PlaylistContents'
-import TopMenu from './TopMenu'
+import TopMenu from './TopMenu';
+import PlaylistContents from './PlaylistContents';
+import { requestVideoPlaylist } from './GoogleApiUtils';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {url: '', sidebarVisible: true, signInStatus: {isSignedIn: false, user: {sub:'',email:'',name:'',given_name:'',picture:''}}};
+    this.state = {sidebarVisible: true, signInStatus: {isSignedIn: false, user: {sub:'',email:'',name:'',given_name:'',picture:''}}};
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnSignIn = this.handleOnSignIn.bind(this);
-    this.handlePlaylistIdSubmit = this.handlePlaylistIdSubmit.bind(this);
+    this.handlePlaylistSelect = this.handlePlaylistSelect.bind(this);
     this.handleToggleSideMenu = this.handleToggleSideMenu.bind(this);
   }
 
   render() {
-    const url = this.state.url;
     const isSignedIn = this.state.signInStatus.isSignedIn;
     const user = this.state.signInStatus.user;
     const handleSignOut = this.state.signInStatus.handleSignOut;
     const sidebarVisible = this.state.sidebarVisible;
+    const selectedPlaylist = this.state.selectedPlaylist;
+    const contents = this.state.contents;
     let login = null;
     if(isSignedIn) {
       login = <Profile user={user} />
@@ -38,18 +36,20 @@ class App extends Component {
 
     return (
       <div>
-        <TopMenu user={login}
-                onSignOut={handleSignOut}
-                toggleVisibility={this.handleToggleSideMenu}
-                searchBar={<SearchBar onHandleSubmit={this.handleOnSubmit}/>}
-              />
-        <SidebarLeftUncover visible={sidebarVisible}
-                            options={isSignedIn && <YoutubePlaylists onHandlePlaylistSelect={this.handlePlaylistIdSubmit}/>}
-                            >
-          <SearchResultTable url={url}/>
+        <TopMenu
+          user={login}
+          onSignOut={handleSignOut}
+          toggleVisibility={this.handleToggleSideMenu}
+        />
+        <SidebarLeftUncover
+          visible={sidebarVisible}
+          options={isSignedIn && <YoutubePlaylists onHandlePlaylistSelect={this.handlePlaylistSelect}/>}
+        >
+          <PlaylistContents
+            playlist={ selectedPlaylist }
+            contents={ contents }
+          />
         </SidebarLeftUncover>
-
-
       </div>
     );
   }
@@ -62,13 +62,25 @@ class App extends Component {
     this.setState({url: url});
   };
 
-  handlePlaylistIdSubmit(id) {
-    this.handleOnSubmit('list=' + id);
+  handlePlaylistSelect(playlist) {
+    this.setState({selectedPlaylist: playlist});
+    const playlistId = playlist.playlistId;
+    console.log(playlist);
+    requestVideoPlaylist(playlistId, '', result => {
+      console.log(result);
+      const contents = result.items.map(item => {
+        return { contentId: item.id, title: item.snippet.title, description: item.snippet.description };
+      })
+      this.setState({contents: contents})
+    });
   }
 
   handleOnSignIn(signInStatus) {
     this.setState({signInStatus: signInStatus});
   }
 }
+
+// _gJQceDMxJ8gP-8T2HLXUoURK8c/KUOEcA8PaPEUtjqMAYkamDtLmTY
+// _gJQceDMxJ8gP-8T2HLXUoURK8c/KUOEcA8PaPEUtjqMAYkamDtLmTY
 
 export default App;

@@ -34,7 +34,7 @@ class YoutubePlaylists extends Component {
                 description: item.snippet.localized.description}
       });
       console.log(playlists);
-      fetch('http://localhost:4568/api/playlists',
+      fetch('api/playlists',
       {
         method: 'post',
         headers: {'Content-Type': 'application/json'},

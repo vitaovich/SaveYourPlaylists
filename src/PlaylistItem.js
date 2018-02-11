@@ -8,7 +8,9 @@ class PlaylistItem extends Component {
   }
 
   handlePlaylistClick() {
-    this.props.onHandlePlaylistSelect(this.props.id);
+    const playlistId = this.props.id;
+    const title = this.props.title;
+    this.props.onHandlePlaylistSelect({playlistId: playlistId, title: title});
   }
 
   render() {

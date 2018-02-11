@@ -3,7 +3,7 @@ import querystring from 'querystring'
 
 const SEARCH_URL = 'https://www.googleapis.com/youtube/v3/playlistItems'
 
-export default function (key, playlistId) {
+function playlistSearch (key, playlistId) {
   const params = {
     part: 'snippet',
     key: key,
@@ -25,3 +25,33 @@ function checkStatus (response) {
 function parseJSON(response) {
   return response.json()
 }
+
+function requestVideoPlaylist (playlistId, pageToken, nextFunction) {
+  let gapi = window.gapi;
+  var requestOptions = {
+   playlistId: playlistId,
+   part: 'snippet',
+   maxResults: 10
+  };
+
+  if (pageToken) {
+   requestOptions.pageToken = pageToken;
+  }
+
+  var request = gapi.client.youtube.playlistItems.list(requestOptions);
+  request.execute(response => {
+   // Only show pagination buttons if there is a pagination token for the
+   // next or previous page of results.
+   // nextPageToken = response.result.nextPageToken;
+   // var nextVis = nextPageToken ? 'visible' : 'hidden';
+   // $('#next-button').css('visibility', nextVis);
+   // prevPageToken = response.result.prevPageToken
+   // var prevVis = prevPageToken ? 'visible' : 'hidden';
+   // $('#prev-button').css('visibility', prevVis);
+   //
+   // var playlistItems = response.result.items;
+   nextFunction(response.result);
+  });
+}
+
+export { playlistSearch, requestVideoPlaylist };
