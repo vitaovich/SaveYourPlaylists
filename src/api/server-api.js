@@ -5,6 +5,7 @@ var apiServer = express();
 var config = require('./config');
 var PlaylistService = require('./playlist.service');
 var UserService = require('./user.service');
+var VideoService = require('./video.service');
 
 // parse application/x-www-form-urlencoded
 apiServer.use(bodyParser.urlencoded({ extended: false }));
@@ -31,6 +32,11 @@ router.post('/users', userService.post);
 router.put('/users/:id', userService.put);
 router.get('/users', userService.getAll);
 router.get('/users/:id', userService.get);
+
+const videoService = VideoService;
+router.post('/videos', videoService.post);
+router.get('/videos', videoService.getAll);
+router.get('/videos/:id', videoService.get);
 
 apiServer.use('/api', router);
 

@@ -6,7 +6,7 @@ import SidebarLeftUncover from './SidebarLeftUncover';
 import TopMenu from './TopMenu';
 import PlaylistContents from './PlaylistContents';
 import { requestVideoPlaylist } from './GoogleApiUtils';
-import { putUser } from './ApiUtils';
+import { putUser, postVideo } from './ApiUtils';
 
 class App extends Component {
   constructor(props) {
@@ -74,9 +74,18 @@ class App extends Component {
     requestVideoPlaylist(playlistId, '', result => {
       console.log(result);
       const contents = result.items.map(item => {
-        return { contentId: item.id, title: item.snippet.title, description: item.snippet.description };
+        return { _id: item.snippet.resourceId.videoId, etag: item.etag, title: item.snippet.title, description: item.snippet.description };
       })
-      this.setState({contents: contents})
+      const contentPromises = contents.map(content => {
+        return postVideo(content);
+      })
+      Promise.all(contentPromises)
+      .then( res => {
+        console.log('Videos should be posted');
+        console.log(res);
+        const contents = res.map(content => content.video);
+        this.setState({contents: contents});
+      });
     });
   }
 

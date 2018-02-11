@@ -1,12 +1,12 @@
 import fetch from 'isomorphic-fetch'
 import querystring from 'querystring'
 
-function getUser (id) {
+export function getUser (id) {
   const params = { id: id }
   return fetching(`${'api/users'}?${querystring.stringify(params)}`);
 }
 
-function postUser (idToken) {
+export function postUser (idToken) {
   let fetchData = {
     method: 'post',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -24,13 +24,22 @@ export function putUser (user) {
   return fetching('api/users/' + user._id, fetchData);
 }
 
-function postPlaylist (playlist) {
+export function postPlaylist (playlist) {
   let fetchData = {
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(playlist),
   }
   return fetching('api/playlists', fetchData);
+}
+
+export function postVideo (video) {
+  let fetchData = {
+    method: 'post',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(video),
+  }
+  return fetching('api/videos', fetchData);
 }
 
 function fetching(url, fetchData) {
@@ -49,5 +58,3 @@ function checkStatus (response) {
 function parseJSON(response) {
   return response.json()
 }
-
-export { getUser, postUser, postPlaylist };
