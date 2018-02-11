@@ -62,10 +62,9 @@ class GoogleSignIn extends Component {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: 'idtoken=' + idToken,
     }
-    fetch('/api/users', fetchData)
+    fetch('api/users', fetchData)
     .then(response => {
-      console.log(response);
-      return response.json()
+      return response.json();
     })
     .then(this.handleUserSession);
   }

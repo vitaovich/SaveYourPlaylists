@@ -23,12 +23,16 @@ this.getAll = function (req, res) {
 
 this.post = function (req, res) {
   console.log('Post a playlist.');
-  // console.log(req.body);
-  const playlists = req.body.map((playlist) => {
-    let pl = new Playlist(playlist);
+  const playlist = new Playlist(req.body);
+  console.log(playlist);
+  playlist.save( error => {
+    if(error) {
+      console.log('ERROR OCCURED');
+      console.log(error);
+      return res.status(200).json({success: false, message: 'Playlist already exists', playlist: playlist});
+    }
+    res.json({success: true, playlist: playlist});
   });
-  // Playlist.insertMany(playlists, (error, docs) => {console.log(error)});
-  res.send(playlists);
 };
 
 this.put = function(req, res) {

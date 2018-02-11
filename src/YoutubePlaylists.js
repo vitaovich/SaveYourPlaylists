@@ -14,7 +14,6 @@ class YoutubePlaylists extends Component {
   }
 
   getYoutubePlaylists() {
-    console.log('Fetching youtube playlists');
     let gapi = window.gapi;
     var request = gapi.client.youtube.playlists.list({
       mine: true,
@@ -25,21 +24,25 @@ class YoutubePlaylists extends Component {
   }
 
   handlePlaylistsList(response) {
-    console.log(response.result);
     if(response.result) {
       const playlists = response.result.items.map((item) => {
         return {etag: item.etag,
-                youtubeId: item.id,
+                _id: item.id,
                 title: item.snippet.localized.title,
                 description: item.snippet.localized.description}
       });
+      console.log('PLAYLISTS');
       console.log(playlists);
-      fetch('api/playlists',
-      {
-        method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(playlists),
-      }).then((response) => {console.log(response);});
+      playlists.forEach(playlist => {
+        fetch('api/playlists',
+        {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(playlist),
+        }).then((response) => {console.log(response); return response.json()})
+          .then(data => {console.log(data)});
+      })
+
       this.setState({playlists: response.result.items})
     }
 

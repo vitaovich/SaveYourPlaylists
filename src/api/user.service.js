@@ -31,19 +31,21 @@ this.post = function (req, res) {
   gapiClient.verifyIdToken({idToken: id_token, audience:CLIENT_ID})
   .then(login => {
     const payload = login.getPayload();
-    const newUser = {sub: payload['sub'],
+    const newUser = {_id: payload['sub'],
                   email: payload['email'],
                   name: payload['name'],
                   given_name: payload['given_name'],
                   picture: payload['picture']};
 
     const user = new User(newUser);
+    console.log(user);
     user.save( error => {
-      console.log('ERROR OCCURED');
       if(error) {
-        return res.status(200).json({success: false, message: 'User already exists', user: newUser});
+        console.log('ERROR OCCURED');
+        console.log(error);
+        return res.status(200).json({success: false, message: 'User already exists', user: user});
       }
-      res.json({success: true, user: newUser});
+      res.json({success: true, user: user});
     });
   });
 };
