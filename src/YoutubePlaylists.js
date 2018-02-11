@@ -32,11 +32,17 @@ class YoutubePlaylists extends Component {
                 title: item.snippet.localized.title,
                 description: item.snippet.localized.description}
       });
-      playlists.forEach(playlist => {
-        postPlaylist(playlist)
-        .then(data => {console.log(data)});
+      const playlistPromises = playlists.map(playlist => {
+        return postPlaylist(playlist);
       })
-      this.setState({playlists: response.result.items})
+      Promise.all(playlistPromises)
+      .then(result => {
+        const playlists = result.map(res => res.playlist);
+        const playlistIds = result.map(res => res.playlist._id);
+        this.props.onHandleUserPlaylists(playlistIds);
+        console.log(playlists);
+        this.setState({ playlists: playlists });
+      });
     }
   }
 
@@ -47,9 +53,9 @@ class YoutubePlaylists extends Component {
   render() {
     const playlists = this.state.playlists;
     const list = playlists.map((playlist) =>
-      <Menu.Item key={playlist.id}>
-        <PlaylistItem id={playlist.id}
-                  title={playlist.snippet.title}
+      <Menu.Item key={playlist._id}>
+        <PlaylistItem id={playlist._id}
+                  title={playlist.title}
                   onHandlePlaylistSelect={this.props.onHandlePlaylistSelect}/>
       </Menu.Item>
     );

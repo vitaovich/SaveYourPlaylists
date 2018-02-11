@@ -6,6 +6,7 @@ import SidebarLeftUncover from './SidebarLeftUncover';
 import TopMenu from './TopMenu';
 import PlaylistContents from './PlaylistContents';
 import { requestVideoPlaylist } from './GoogleApiUtils';
+import { putUser } from './ApiUtils';
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class App extends Component {
     this.handleOnSignIn = this.handleOnSignIn.bind(this);
     this.handlePlaylistSelect = this.handlePlaylistSelect.bind(this);
     this.handleToggleSideMenu = this.handleToggleSideMenu.bind(this);
+    this.handleUserPlaylistsUpdate = this.handleUserPlaylistsUpdate.bind(this);
   }
 
   render() {
@@ -38,7 +40,9 @@ class App extends Component {
         />
         <SidebarLeftUncover
           visible={sidebarVisible}
-          options={isSignedIn && <YoutubePlaylists onHandlePlaylistSelect={this.handlePlaylistSelect}/>}
+          options={isSignedIn && <YoutubePlaylists
+                                    onHandleUserPlaylists={this.handleUserPlaylistsUpdate}
+                                    onHandlePlaylistSelect={this.handlePlaylistSelect}/>}
         >
           <PlaylistContents
             playlist={ selectedPlaylist }
@@ -47,6 +51,12 @@ class App extends Component {
         </SidebarLeftUncover>
       </div>
     );
+  }
+
+  handleUserPlaylistsUpdate(playlists) {
+    let currentUser = this.state.signInStatus.user;
+    currentUser.playlists = playlists;
+    putUser(currentUser);
   }
 
   handleToggleSideMenu() {

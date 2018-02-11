@@ -59,9 +59,12 @@ this.put = function(req, res) {
   User.findByIdAndUpdate(id, user, (err, doc) => {
     console.log(err);
     console.log(doc);
+    if(doc) {
+      res.json(doc);
+    } else {
+      res.sendStatus(404);
+    }
   });
-  res.sendStatus(200);
-  // const user = new User(req.body.user);
 };
 
 this.delete = function(req, res) {
