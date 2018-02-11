@@ -28,6 +28,7 @@ router.delete('/playlists/:id', pService.delete);
 
 const userService = UserService;
 router.post('/users', userService.post);
+router.put('/users/:id', userService.put);
 router.get('/users', userService.getAll);
 router.get('/users/:id', userService.get);
 

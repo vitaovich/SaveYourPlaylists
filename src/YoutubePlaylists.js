@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react'
 import PlaylistItem from './PlaylistItem';
+import { postPlaylist } from './ApiUtils';
 
 /* global gapi */
 
@@ -31,21 +32,12 @@ class YoutubePlaylists extends Component {
                 title: item.snippet.localized.title,
                 description: item.snippet.localized.description}
       });
-      console.log('PLAYLISTS');
-      console.log(playlists);
       playlists.forEach(playlist => {
-        fetch('api/playlists',
-        {
-          method: 'post',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(playlist),
-        }).then((response) => {console.log(response); return response.json()})
-          .then(data => {console.log(data)});
+        postPlaylist(playlist)
+        .then(data => {console.log(data)});
       })
-
       this.setState({playlists: response.result.items})
     }
-
   }
 
   componentDidMount() {
@@ -64,7 +56,6 @@ class YoutubePlaylists extends Component {
     return (
       <div>
         {list}
-
       </div>
     );
   }

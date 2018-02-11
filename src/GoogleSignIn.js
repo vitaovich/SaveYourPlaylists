@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './GoogleSignIn.css';
+import { postUser } from './ApiUtils';
 
 const CLIENT_ID = '379911385768-enee68tbs2v1fg4l2g7rr9hdh03shfc1.apps.googleusercontent.com'
 const DISCOVERY_DOCS =  ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"];
@@ -19,7 +20,6 @@ class GoogleSignIn extends Component {
     this.handleAuthClick = this.handleAuthClick.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
     this.handleInit = this.handleInit.bind(this);
-    this.postVerifyUser = this.postVerifyUser.bind(this);
     this.handleUserSession = this.handleUserSession.bind(this);
   }
 
@@ -49,24 +49,11 @@ class GoogleSignIn extends Component {
   handleSignInStatus(isSignedIn) {
     if(isSignedIn) {
       const user = gapi.auth2.getAuthInstance().currentUser.get();
-      const id_token = user.getAuthResponse().id_token
-      this.postVerifyUser(id_token);
+      const id_token = user.getAuthResponse().id_token;
+      postUser(id_token).then(this.handleUserSession);
     } else {
-      this.props.onHandleSignIn({isSignedIn: false})
+      this.handleUserSession({isSignedIn: false})
     }
-  }
-
-  postVerifyUser(idToken) {
-    let fetchData = {
-      method: 'post',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: 'idtoken=' + idToken,
-    }
-    fetch('api/users', fetchData)
-    .then(response => {
-      return response.json();
-    })
-    .then(this.handleUserSession);
   }
 
   handleUserSession(data) {
@@ -80,7 +67,6 @@ class GoogleSignIn extends Component {
   }
 
   handleSignOut() {
-    console.log('logging out');
     gapi.auth2.getAuthInstance().signOut();
   }
 
@@ -91,7 +77,6 @@ class GoogleSignIn extends Component {
           <span className="buttonText">Log in with Google</span>
         </div>
     );
-
   }
 }
 

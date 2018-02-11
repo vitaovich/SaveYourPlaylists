@@ -8,7 +8,7 @@ var UserSchema = new Schema({
     name: String,
     given_name: String,
     picture: String,
-    playlists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }]
+    playlists: [{ type: String, ref: 'Playlist' }]
   });
 
 //Export model

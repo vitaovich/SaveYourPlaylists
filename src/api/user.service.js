@@ -26,7 +26,7 @@ this.getAll = function (req, res) {
 
 this.post = function (req, res) {
   console.log('Post user.');
-  console.log(req.body);
+  // console.log(req.body);
   const id_token = req.body.idtoken;
   gapiClient.verifyIdToken({idToken: id_token, audience:CLIENT_ID})
   .then(login => {
@@ -41,8 +41,8 @@ this.post = function (req, res) {
     console.log(user);
     user.save( error => {
       if(error) {
-        console.log('ERROR OCCURED');
-        console.log(error);
+        // console.log('ERROR OCCURED');
+        // console.log(error);
         return res.status(200).json({success: false, message: 'User already exists', user: user});
       }
       res.json({success: true, user: user});
@@ -51,6 +51,17 @@ this.post = function (req, res) {
 };
 
 this.put = function(req, res) {
+  console.log('Put user');
+  console.log(req.params);
+  console.log(req.body);
+  const id = req.params.id;
+  const user = new User(req.body);
+  User.findByIdAndUpdate(id, user, (err, doc) => {
+    console.log(err);
+    console.log(doc);
+  });
+  res.sendStatus(200);
+  // const user = new User(req.body.user);
 };
 
 this.delete = function(req, res) {

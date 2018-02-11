@@ -10,7 +10,7 @@ import { requestVideoPlaylist } from './GoogleApiUtils';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {sidebarVisible: true, signInStatus: {isSignedIn: false, user: {sub:'',email:'',name:'',given_name:'',picture:''}}};
+    this.state = {sidebarVisible: true, signInStatus: {isSignedIn: false}};
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnSignIn = this.handleOnSignIn.bind(this);
@@ -25,14 +25,9 @@ class App extends Component {
     const sidebarVisible = this.state.sidebarVisible;
     const selectedPlaylist = this.state.selectedPlaylist;
     const contents = this.state.contents;
-    let login = null;
-    if(isSignedIn) {
+    let login = <GoogleSignIn onHandleSignIn={this.handleOnSignIn} />;
+    if(isSignedIn)
       login = <Profile user={user} />
-    } else {
-      login = <GoogleSignIn
-                  onHandleSignIn={this.handleOnSignIn}
-                />
-    }
 
     return (
       <div>
@@ -79,8 +74,5 @@ class App extends Component {
     this.setState({signInStatus: signInStatus});
   }
 }
-
-// _gJQceDMxJ8gP-8T2HLXUoURK8c/KUOEcA8PaPEUtjqMAYkamDtLmTY
-// _gJQceDMxJ8gP-8T2HLXUoURK8c/KUOEcA8PaPEUtjqMAYkamDtLmTY
 
 export default App;
