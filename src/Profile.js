@@ -3,7 +3,7 @@ import { Label } from 'semantic-ui-react'
 
 class Profile extends Component {
   render() {
-    const user = this.props.user;
+    const user = this.props.user || 'no user';
     const imgUrl = user.picture;
     const name = user.name;
     return (
