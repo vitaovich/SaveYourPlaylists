@@ -58,7 +58,7 @@ class GoogleSignIn extends Component {
 
   handleUserSession(data) {
     let authenticated = data.user ? true : false;
-    const status = {isAuthenticated: authenticated, user: data.user, handleSignOut: this.handleSignOut};
+    const status = {isAuthenticated: authenticated, user: {_id: data.user._id}, handleSignOut: this.handleSignOut};
     this.props.onHandleSignIn(status);
   }
 

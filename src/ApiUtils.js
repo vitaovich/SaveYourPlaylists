@@ -2,8 +2,8 @@ import fetch from 'isomorphic-fetch'
 import querystring from 'querystring'
 
 export function getUser (id) {
-  const params = { id: id }
-  return fetching(`${'api/users'}?${querystring.stringify(params)}`);
+  const fetchUrl = 'api/users/' + id;
+  return fetching(fetchUrl);
 }
 
 export function postUser (idToken) {

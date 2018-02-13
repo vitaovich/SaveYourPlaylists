@@ -57,10 +57,11 @@ this.put = function(req, res) {
   const id = req.params.id;
   const user = new User(req.body);
   User.findByIdAndUpdate(id, user, (err, doc) => {
-    console.log(err);
-    console.log(doc);
+    // console.log(err);
+    // console.log(doc);
+
     if(doc) {
-      res.json(doc);
+      res.json({user: user, error: err});
     } else {
       res.sendStatus(404);
     }

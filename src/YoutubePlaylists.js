@@ -51,6 +51,7 @@ class YoutubePlaylists extends Component {
   }
 
   render() {
+    console.log(this.props.channels);
     const playlists = this.state.playlists;
     const list = playlists.map((playlist) =>
       <Menu.Item key={playlist._id}>

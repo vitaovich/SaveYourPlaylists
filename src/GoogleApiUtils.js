@@ -26,6 +26,20 @@ function parseJSON(response) {
   return response.json()
 }
 
+export function requestMineChannel() {
+  const options =  {
+    part: 'id',
+    mine: true
+  };
+  return requestChannel(options);
+}
+
+export function requestChannel(options) {
+  let youtube = window.gapi.client.youtube;
+  let request = youtube.channels.list(options);
+  return request;
+}
+
 function requestVideoPlaylist (playlistId, pageToken, nextFunction) {
   let gapi = window.gapi;
   var requestOptions = {

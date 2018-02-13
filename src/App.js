@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import Login from './Login';
 import Home from './Home';
+import { getUser } from './ApiUtils';
 
 class App extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class App extends Component {
     this.state = {session: {isAuthenticated: false}}
 
     this.handleSession = this.handleSession.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   }
 
   render() {
@@ -22,7 +24,7 @@ class App extends Component {
                                         redirectToReferrer={session.isAuthenticated}
                                         onHandleSignIn={this.handleSession}/>}
             />
-            <PrivateRoute exact path='/' component={Home} redirectTo='/login' session={session}/>
+            <PrivateRoute exact path='/' component={Home} redirectTo='/login' session={session} updateUser={this.updateUser}/>
           </div>
         </Router>
     );
@@ -30,9 +32,17 @@ class App extends Component {
 
   handleSession(session) {
     // Is Getting called three times
-    // console.log('User Session');
-    // console.log(session);
-    this.setState({ session: session });
+    const userId = session.user._id;
+    getUser(userId).then(res => {
+      session.user = res;
+      this.setState({ session: session });
+    })
+  }
+
+  updateUser(user) {
+    let { session } = this.state;
+    session.user = user;
+    this.handleSession(session);
   }
 }
 

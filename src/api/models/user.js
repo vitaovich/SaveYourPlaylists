@@ -8,6 +8,7 @@ var UserSchema = new Schema({
     name: String,
     given_name: String,
     picture: String,
+    channels: [{ type: String }],
     playlists: [{ type: String, ref: 'Playlist' }]
   });
 
