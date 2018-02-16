@@ -40,6 +40,13 @@ export function requestChannel(options) {
   return request;
 }
 
+export function requestPlaylistsList(options) {
+  let youtube = window.gapi.client.youtube;
+  console.log('PLAYLISTS LIST PART');
+  console.log(options.part);
+  return youtube.playlists.list(options);
+}
+
 function requestVideoPlaylist (playlistId, pageToken, nextFunction) {
   let gapi = window.gapi;
   var requestOptions = {

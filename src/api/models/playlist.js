@@ -6,7 +6,8 @@ var PlaylistSchema = new Schema({
   _id: String,
   etag: String,
   title: String,
-  description: String
+  description: String,
+  channel: String,
 });
 
 //Export model

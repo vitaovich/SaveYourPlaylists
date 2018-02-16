@@ -21,11 +21,13 @@ router.get('/', function (req, res) {
 });
 
 const pService = PlaylistService;
+router.get('/channels/:id/playlists', pService.getByChannel);
 router.get('/playlists/:id', pService.get);
 router.get('/playlists', pService.getAll);
 router.post('/playlists', pService.post);
 router.put('/playlists/:id', pService.put);
 router.delete('/playlists/:id', pService.delete);
+
 
 const userService = UserService;
 router.post('/users', userService.post);

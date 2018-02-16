@@ -24,6 +24,11 @@ export function putUser (user) {
   return fetching('api/users/' + user._id, fetchData);
 }
 
+export function getChannelPlaylists (channelId) {
+  const fetchUrl = 'api/channels/' + channelId + '/playlists';
+  return fetching(fetchUrl);
+}
+
 export function postPlaylist (playlist) {
   let fetchData = {
     method: 'post',
@@ -31,6 +36,15 @@ export function postPlaylist (playlist) {
     body: JSON.stringify(playlist),
   }
   return fetching('api/playlists', fetchData);
+}
+
+export function putPlaylist (playlist) {
+  let fetchData = {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(playlist)
+  }
+  return fetching('api/playlists/' + playlist._id, fetchData);
 }
 
 export function postVideo (video) {

@@ -43,7 +43,7 @@ this.post = function (req, res) {
       if(error) {
         // console.log('ERROR OCCURED');
         // console.log(error);
-        return res.status(200).json({success: false, message: 'User already exists', user: user});
+        return res.status(200).json({success: false, message: 'User already exists', userId: user._id});
       }
       res.json({success: true, user: user});
     });

@@ -42,7 +42,6 @@ class Home extends Component {
             </Button>
             <YoutubePlaylists
             channels={channels}
-            onHandleUserPlaylists={this.handleUserPlaylistsUpdate}
             onHandlePlaylistSelect={this.handlePlaylistSelect}/>
                     </div>
                   }

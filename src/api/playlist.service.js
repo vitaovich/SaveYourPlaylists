@@ -11,6 +11,19 @@ this.get = function (req, res) {
   });
 };
 
+this.getByChannel = function (req, res) {
+  console.log('Getting all channels playlist');
+  const channelId = req.params.id;
+  Playlist.find({ channel: channelId }, (err, docs) => {
+    if(docs) {
+      res.json(docs);
+    }
+    else {
+      res.sendStatus(404);
+    }
+  });
+};
+
 this.getAll = function (req, res) {
   console.log('Get all playlists.');
   Playlist.find({})
@@ -38,9 +51,10 @@ this.post = function (req, res) {
 this.put = function(req, res) {
   var id = req.params.id;
   console.log( 'Put playlist: ' + req.params.id );
-  Playlist.findByIdAndUpdate(id, req.body, { new: true }, (err, playlist) => {
-        if ( err ) return handleError( err, res );
-        res.send(playlist);
+  const playlist = new Playlist(req.body);
+  Playlist.findByIdAndUpdate(id, playlist, { new: true }, (err, playlist) => {
+        // if ( err ) return handleError( err, res );
+        res.json(playlist);
   });
 };
 
