@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import querystring from 'querystring'
-import secret from './clientSecrets'
+import secret from './clientSecret'
 
 const SEARCH_URL = 'https://www.googleapis.com/youtube/v3/playlistItems'
 const CLIENT_ID = secret.web.client_id;

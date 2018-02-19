@@ -4,8 +4,6 @@ import PlaylistItem from './PlaylistItem';
 import { putPlaylist, postPlaylist, getChannelPlaylists } from './ApiUtils';
 import { requestPlaylistsList } from './GoogleApiUtils';
 
-/* global gapi */
-
 class YoutubePlaylists extends Component {
   constructor(props) {
     super(props);

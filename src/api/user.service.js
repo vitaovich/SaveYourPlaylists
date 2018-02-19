@@ -1,7 +1,8 @@
 var User = require('./models/user');
 var config = require('./config');
 const { OAuth2Client } = require('google-auth-library');
-const CLIENT_ID = '379911385768-enee68tbs2v1fg4l2g7rr9hdh03shfc1.apps.googleusercontent.com';
+var secret = require('.././clientSecret');
+const CLIENT_ID = secret.web.client_id;
 var gapiClient = new OAuth2Client(CLIENT_ID, '', '');
 
 this.get = function (req, res) {
@@ -45,7 +46,7 @@ this.post = function (req, res) {
         // console.log(error);
         return res.status(200).json({success: false, message: 'User already exists', userId: user._id});
       }
-      
+
       res.json({success: true, user: user});
     });
   });

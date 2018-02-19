@@ -6,8 +6,6 @@ import { getAuth2 } from './GoogleApiUtils';
 class GoogleSignIn extends Component {
   constructor(props) {
     super(props);
-    this.state = {userId: '', verified: false};
-
     this.handleSignInStatus = this.handleSignInStatus.bind(this);
     this.handleAuthClick = this.handleAuthClick.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);

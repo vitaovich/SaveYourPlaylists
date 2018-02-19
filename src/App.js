@@ -31,8 +31,7 @@ class App extends Component {
   }
 
   handleSession(session) {
-    const currentSession = session;
-    this.setState({ session: currentSession });
+    this.setState({ session: session });
   }
 
   updateUser(user) {
