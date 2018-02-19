@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react'
 import PlaylistItem from './PlaylistItem';
-import { putPlaylist, postPlaylist, getChannelPlaylists } from './ApiUtils';
+import { postPlaylist, getChannelPlaylists } from './ApiUtils';
 import { requestPlaylistsList } from './GoogleApiUtils';
 
 class YoutubePlaylists extends Component {

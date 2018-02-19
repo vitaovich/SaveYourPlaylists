@@ -24,12 +24,19 @@ class GoogleSignIn extends Component {
         const user = auth2.getAuthInstance().currentUser.get();
         const id_token = user.getAuthResponse().id_token;
         postUser(id_token).then(status => {
+          console.log(status);
           let session = {isAuthenticated: true, handleSignOut: this.handleSignOut};
-          getUser(status.userId).then(res => {
-            session.user = res;
-            this.props.onHandleSignIn(session);
-          })
-        });
+          if(!status.success) {
+            getUser(status.userId).then(res => {
+              console.log(res);
+              session.user = res;
+              this.props.onHandleSignIn(session);
+            });
+          } else {
+              session.user = status.user;
+              this.props.onHandleSignIn(session);
+          }
+        }, rej => {this.props.onHandleSignIn({isAuthenticated: false})});
       });
     } else {
       this.props.onHandleSignIn({isAuthenticated: false})

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import Login from './Login';
 import Home from './Home';
-import { getUser } from './ApiUtils';
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +13,9 @@ class App extends Component {
   }
 
   render() {
+    console.log('Current session');
     const session = this.state.session;
+    console.log(session);
     return (
         <Router>
           <div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Header, Image, Button } from 'semantic-ui-react';
+import { List, Header, Image } from 'semantic-ui-react';
 import playlistIcon  from './assets/images/playlist_icon.png';
 
 class PlaylistContents extends Component {

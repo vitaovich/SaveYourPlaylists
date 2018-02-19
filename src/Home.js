@@ -5,7 +5,7 @@ import SidebarLeftUncover from './SidebarLeftUncover';
 import TopMenu from './TopMenu';
 import PlaylistContents from './PlaylistContents';
 import { requestVideoPlaylist, requestMineChannel } from './GoogleApiUtils';
-import { putUser, postVideo, getUser } from './ApiUtils';
+import { putUser, postVideo } from './ApiUtils';
 import { Button, Icon } from 'semantic-ui-react';
 
 class Home extends Component {

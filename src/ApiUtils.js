@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-fetch'
-import querystring from 'querystring'
 
 export function getUser (id) {
   const fetchUrl = 'api/users/' + id;
