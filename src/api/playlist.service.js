@@ -16,7 +16,7 @@ this.getByChannel = function (req, res) {
   const channelId = req.params.id;
   Playlist.find({ channel: channelId }, (err, docs) => {
     if(docs) {
-      res.json(docs);
+      res.json({channelId: channelId, playlists: docs});
     }
     else {
       res.sendStatus(404);

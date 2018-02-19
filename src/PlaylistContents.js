@@ -6,9 +6,10 @@ class PlaylistContents extends Component {
   render() {
     const playlist = this.props.playlist || { playlistId: '', title: 'No Playlist Selected' }
     const contents = this.props.contents || [{ _id: '', title: 'No content available', description: 'Nothing' }];
+    const fullScreenStyle = {'height': '100vh'}
 
     return(
-      <div className='viewFull'>
+      <div   style={fullScreenStyle}>
         <Header as='h3' icon>
           <Image src={playlistIcon}/>
           <Header.Content>

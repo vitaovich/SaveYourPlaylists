@@ -13,7 +13,7 @@ class App extends Component {
   }
 
   render() {
-    console.log('Current session');
+    console.log('Current session in app');
     const session = this.state.session;
     console.log(session);
     return (
@@ -37,7 +37,8 @@ class App extends Component {
   updateUser(user) {
     let { session } = this.state;
     session.user = user;
-    this.handleSession(session);
+    const updatedSession = session;
+    this.handleSession(updatedSession);
   }
 }
 

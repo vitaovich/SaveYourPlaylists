@@ -27,6 +27,8 @@ class Home extends Component {
     const selectedPlaylist = this.state.selectedPlaylist;
     const contents = this.state.contents;
     const channels = user.channels;
+    console.log('Current session in home');
+    console.log(session);
     return (
       <div>
         <TopMenu

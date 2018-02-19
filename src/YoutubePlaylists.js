@@ -1,101 +1,100 @@
 import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react'
+import { Menu, Header, Accordion } from 'semantic-ui-react'
 import PlaylistItem from './PlaylistItem';
-import { postPlaylist, getChannelPlaylists } from './ApiUtils';
+import { postPlaylist, getChannelPlaylists, syncPlaylists } from './ApiUtils';
 import { requestPlaylistsList } from './GoogleApiUtils';
 
 class YoutubePlaylists extends Component {
   constructor(props) {
     super(props);
-    this.state = {playlists : []}
+    this.state = {channels: []}
 
-    this.syncPlaylists = this.syncPlaylists.bind(this);
+    this.handleChannels = this.handleChannels.bind(this);
   }
 
-  syncPlaylists(channelId) {
-    const options = {part: 'id', channelId: channelId, maxResults: 50};
-
-    const youtubeData = requestPlaylistsList(options)
-    .then(response => response.result.items.map(item => item.id));
-
-    const localData = getChannelPlaylists(channelId)
-    .then(response => response.map(item => item._id));
-
-    Promise.all([youtubeData, localData])
-    .then(this.comparePlaylists)
-    .then(this.updateLocalDB)
+  handleChannels(channels) {
+    const asyncCalls = channels.map(channel => {
+      console.log('Channel: ' + channel);
+      return syncPlaylists(channel);
+    });
+    console.log('SYNCS');
+    console.log(asyncCalls);
+    Promise.all(asyncCalls)
     .then(res => {
-      getChannelPlaylists(channelId).then(
-        response => this.setState({playlists: response})
-      )
+      console.log('Completed syncing');
+      console.log('Grabbing channels');
+      console.log(res);
+      let channelRequests = []
+      channels.forEach(channel => {
+        channelRequests.push(getChannelPlaylists(channel));
+      });
+      Promise.all(channelRequests)
+      .then(channels => {
+        console.log(channels);
+        this.setState({channels: channels})
+      })
     })
-  }
-
-  updateLocalDB(changes) {
-    changes.forEach(change => {
-      if(change.status === 'new') {
-        console.log('Inserting playlist: ' + change._id);
-        requestPlaylistsList({part: 'snippet', id: change._id})
-        .then(res => {
-          const playlists = res.result.items.map(item => {return {_id: item.id,
-                                                                etag: item.etag,
-                                                                title: item.snippet.title,
-                                                                description: item.snippet.description,
-                                                                channel: item.snippet.channelId
-                                                              }});
-          console.log('Posting playlist');
-          console.log(playlists);
-          playlists.forEach(playlist => {
-            const promise = postPlaylist(playlist);
-          });
-        });
-      } else {
-        console.log('Removing playlist: ' + change._id );
-      }
-    })
-  }
-
-  comparePlaylists(res, rej) {
-    const youtubePlaylists = res[0];
-    const localPlaylists = res[1];
-    let updatedList = []
-    for(let i = 0; i < youtubePlaylists.length; i++) {
-      let playlist;
-      if(!localPlaylists.includes(youtubePlaylists[i])) {
-        playlist = {_id: youtubePlaylists[i], status: 'new'};
-        updatedList.push(playlist);
-      }
-    }
-    for(let i = 0; i < localPlaylists.length; i++) {
-      if(!youtubePlaylists.includes(localPlaylists[i])) {
-        const playlist = {_id: localPlaylists[i], status: 'removed'};
-        updatedList.push(playlist);
-      }
-    }
-    return updatedList;
   }
 
   componentDidMount() {
-    const channelId = this.props.channels[0];
-    if(channelId)
-      this.syncPlaylists(channelId);
+    const channels = this.props.channels;
+    console.log('Mounted youtubePlaylists');
+    console.log(this.props.channels);
+    this.handleChannels(channels)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('Prev props');
+    console.log(prevProps);
+    console.log('Prev State');
+    console.log(prevState);
+    let outOfSync = false;
+    const channels = this.props.channels;
+    const prevChannels = prevState.channels.map(channel => channel.channelId);
+    if(channels) {
+      if(prevChannels) {
+        channels.forEach(channel => {
+          if(!prevChannels.includes(channel)) {
+            outOfSync = true;
+          }
+        })
+      }
+    }
+    if(outOfSync) {
+      this.handleChannels(channels);
+    }
   }
 
   render() {
-    const playlists = this.state.playlists;
-    const list = playlists.map((playlist) =>
-      <Menu.Item key={playlist._id}>
-        <PlaylistItem id={playlist._id}
-                  title={playlist.title}
-                  onHandlePlaylistSelect={this.props.onHandlePlaylistSelect}/>
-      </Menu.Item>
-    );
+    const channels = this.state.channels;
+    const list = channels.map(channel =>
+      <ChannelList key={channel.channelId} channelId={channel.channelId} playlists={channel.playlists} onHandlePlaylistSelect={this.props.onHandlePlaylistSelect}/>
+    )
     return (
       <React.Fragment>
+        <Header as='h2'>Youtube</Header>
         {list}
       </React.Fragment>
     );
   }
+}
+
+function ChannelList(props) {
+  const channelId = props.channelId;
+  const playlists = props.playlists;
+  const playlistItems = playlists.map(playlist =>
+    <Menu.Item key={playlist._id}>
+      <PlaylistItem id={playlist._id}
+                title={playlist.title}
+                onHandlePlaylistSelect={props.onHandlePlaylistSelect}/>
+    </Menu.Item>
+  );
+  return (
+    <div>
+      <Header as='h4'>{channelId}</Header>
+      {playlistItems}
+    </div>
+  );
 }
 
 export default YoutubePlaylists;

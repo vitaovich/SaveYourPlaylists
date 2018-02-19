@@ -1,5 +1,5 @@
 {
-	"dbPath": "mongodb://localhost:27017/musync9",
+	"dbPath": "mongodb://localhost:27017/musync",
 	"port": 3001,
   "name": "SYP API"
 }
