@@ -35,7 +35,8 @@ class App extends Component {
     const userId = session.user._id;
     getUser(userId).then(res => {
       session.user = res;
-      this.setState({ session: session });
+      const currentSession = session;
+      this.setState({ session: currentSession });
     })
   }
 

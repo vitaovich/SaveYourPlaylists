@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './GoogleSignIn.css';
 import { postUser } from './ApiUtils';
+import secret from './clientSecrets'
 
-const CLIENT_ID = '379911385768-enee68tbs2v1fg4l2g7rr9hdh03shfc1.apps.googleusercontent.com'
+const CLIENT_ID = secret.web.client_id;
 const DISCOVERY_DOCS =  ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"];
 const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
 const GAPI_INITIALIZATION = {discoveryDocs: DISCOVERY_DOCS, clientId: CLIENT_ID, scope: SCOPES};
@@ -33,7 +34,6 @@ class GoogleSignIn extends Component {
   }
 
   loadGapi() {
-    console.log('load client auth2');
     gapi.load('client:auth2', this.initClient);
   }
 
@@ -57,6 +57,7 @@ class GoogleSignIn extends Component {
   }
 
   handleUserSession(data) {
+    console.log(data);
     let authenticated = data.userId ? true : false;
     const status = {isAuthenticated: authenticated, user: {_id: data.userId}, handleSignOut: this.handleSignOut};
     this.props.onHandleSignIn(status);

@@ -3,7 +3,7 @@ import querystring from 'querystring'
 
 const SEARCH_URL = 'https://www.googleapis.com/youtube/v3/playlistItems'
 
-function playlistSearch (key, playlistId) {
+export function playlistSearch (key, playlistId) {
   const params = {
     part: 'snippet',
     key: key,
@@ -41,13 +41,12 @@ export function requestChannel(options) {
 }
 
 export function requestPlaylistsList(options) {
+  console.log(options);
   let youtube = window.gapi.client.youtube;
-  console.log('PLAYLISTS LIST PART');
-  console.log(options.part);
   return youtube.playlists.list(options);
 }
 
-function requestVideoPlaylist (playlistId, pageToken, nextFunction) {
+export function requestVideoPlaylist (playlistId, pageToken, nextFunction) {
   let gapi = window.gapi;
   var requestOptions = {
    playlistId: playlistId,
@@ -74,5 +73,3 @@ function requestVideoPlaylist (playlistId, pageToken, nextFunction) {
    nextFunction(response.result);
   });
 }
-
-export { playlistSearch, requestVideoPlaylist };

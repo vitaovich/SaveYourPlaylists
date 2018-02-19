@@ -15,7 +15,6 @@ class YoutubePlaylists extends Component {
   }
 
   syncPlaylists(channelId) {
-    console.log('Sync Playlist start!');
     const options = {part: 'id', channelId: channelId, maxResults: 50};
 
     const youtubeData = requestPlaylistsList(options)
@@ -28,7 +27,6 @@ class YoutubePlaylists extends Component {
     .then(this.comparePlaylists)
     .then(this.updateLocalDB)
     .then(res => {
-      console.log(res);
       getChannelPlaylists(channelId).then(
         response => this.setState({playlists: response})
       )
@@ -36,7 +34,6 @@ class YoutubePlaylists extends Component {
   }
 
   updateLocalDB(changes) {
-    console.log(changes);
     changes.forEach(change => {
       if(change.status === 'new') {
         console.log('Inserting playlist: ' + change._id);
@@ -82,7 +79,8 @@ class YoutubePlaylists extends Component {
 
   componentDidMount() {
     const channelId = this.props.channels[0];
-    this.syncPlaylists(channelId);
+    if(channelId)
+      this.syncPlaylists(channelId);
   }
 
   render() {
@@ -95,9 +93,9 @@ class YoutubePlaylists extends Component {
       </Menu.Item>
     );
     return (
-      <div>
+      <React.Fragment>
         {list}
-      </div>
+      </React.Fragment>
     );
   }
 }

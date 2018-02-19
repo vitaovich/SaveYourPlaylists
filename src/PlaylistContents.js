@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
-import { List, Header, Image } from 'semantic-ui-react';
+import { List, Header, Image, Button } from 'semantic-ui-react';
 import playlistIcon  from './assets/images/playlist_icon.png';
 
 class PlaylistContents extends Component {
-
-
-  componentDidMount() {
-    console.log('PLAYLIST ID');
-    console.log(this.props.playlist);
-    console.log('END');
-  }
-
   render() {
     const playlist = this.props.playlist || { playlistId: '', title: 'No Playlist Selected' }
     const contents = this.props.contents || [{ _id: '', title: 'No content available', description: 'Nothing' }];
 
     return(
-      <div>
+      <div className='viewFull'>
         <Header as='h3' icon>
           <Image src={playlistIcon}/>
           <Header.Content>
