@@ -1,74 +1,49 @@
 import React, { Component } from 'react';
 import './GoogleSignIn.css';
-import { postUser } from './ApiUtils';
-import secret from './clientSecrets'
-
-const CLIENT_ID = secret.web.client_id;
-const DISCOVERY_DOCS =  ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"];
-const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
-const GAPI_INITIALIZATION = {discoveryDocs: DISCOVERY_DOCS, clientId: CLIENT_ID, scope: SCOPES};
-
-/* global gapi */
+import { postUser, getUser } from './ApiUtils';
+import { getAuth2 } from './GoogleApiUtils';
 
 class GoogleSignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {userId: '', verified: false};
 
-    this.loadGapi = this.loadGapi.bind(this);
-    this.initClient = this.initClient.bind(this);
     this.handleSignInStatus = this.handleSignInStatus.bind(this);
     this.handleAuthClick = this.handleAuthClick.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
-    this.handleInit = this.handleInit.bind(this);
-    this.handleUserSession = this.handleUserSession.bind(this);
   }
 
   componentDidMount() {
-    //always loads even when already loaded
-    if(window.gapiready) {
-      this.loadGapi()
-    } else {
-      window.addEventListener('google-loaded', this.loadGapi);
-    }
-  }
-
-  loadGapi() {
-    gapi.load('client:auth2', this.initClient);
-  }
-
-  initClient() {
-    gapi.client.init(GAPI_INITIALIZATION).then(this.handleInit);
-  }
-
-  handleInit() {
-    gapi.auth2.getAuthInstance().isSignedIn.listen(this.handleSignInStatus);
-    this.handleSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+    getAuth2().then(auth2 => {
+      auth2.getAuthInstance().isSignedIn.listen(this.handleSignInStatus);
+      this.handleSignInStatus(auth2.getAuthInstance().isSignedIn.get())
+    })
   }
 
   handleSignInStatus(isSignedIn) {
     if(isSignedIn) {
-      const user = gapi.auth2.getAuthInstance().currentUser.get();
-      const id_token = user.getAuthResponse().id_token;
-      postUser(id_token).then(this.handleUserSession);
+      getAuth2().then(auth2 => {
+        const user = auth2.getAuthInstance().currentUser.get();
+        const id_token = user.getAuthResponse().id_token;
+        postUser(id_token).then(status => {
+          let session = {isAuthenticated: true, handleSignOut: this.handleSignOut};
+          getUser(status.userId).then(res => {
+            session.user = res;
+            this.props.onHandleSignIn(session);
+          })
+        });
+      });
     } else {
-      this.handleUserSession({userId: null})
+      this.props.onHandleSignIn({isAuthenticated: false})
     }
   }
 
-  handleUserSession(data) {
-    console.log(data);
-    let authenticated = data.userId ? true : false;
-    const status = {isAuthenticated: authenticated, user: {_id: data.userId}, handleSignOut: this.handleSignOut};
-    this.props.onHandleSignIn(status);
-  }
-
   handleAuthClick() {
-    gapi.auth2.getAuthInstance().signIn();
+    getAuth2().then(auth2 => auth2.getAuthInstance().signIn());
   }
 
   handleSignOut() {
-    gapi.auth2.getAuthInstance().signOut();
+    getAuth2().then(auth2 => auth2.getAuthInstance().signOut());
   }
 
   render() {

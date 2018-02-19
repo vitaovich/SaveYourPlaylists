@@ -31,13 +31,8 @@ class App extends Component {
   }
 
   handleSession(session) {
-    // Is Getting called three times
-    const userId = session.user._id;
-    getUser(userId).then(res => {
-      session.user = res;
-      const currentSession = session;
-      this.setState({ session: currentSession });
-    })
+    const currentSession = session;
+    this.setState({ session: currentSession });
   }
 
   updateUser(user) {
