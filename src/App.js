@@ -17,7 +17,7 @@ class App extends Component {
     const session = this.state.session;
     console.log(session);
     return (
-        <Router>
+        <Router basename="/">
           <div>
             <Route path="/login"
                   render={routeProps => <Login {...routeProps}
